@@ -40,6 +40,9 @@ public class main {
 
     public static void bootUP(String args) throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
+
+
+
         for (int i = 0; i < 50; i++) {
             rt.exec("taskkill /F /IM goalc.exe");
             rt.exec("taskkill /F /IM gk.exe");
@@ -47,10 +50,15 @@ public class main {
         TimeUnit.SECONDS.sleep(3);
         //rt.exec("cmd.exe cd C:\\Users\\NinjaPC\\Desktop\\opengoal\\unmodified releases\\newputty\\jak-project && task repl");
 
-        File file = new File("C:\\Users\\Mike\\Desktop\\OpenGOAL\\Discord-OpenGOAL\\jak-project\\out\\build\\Release\\bin\\goalc.exe");
+        // directory from where the program was launched
+        String dir = System.getProperty("user.dir");
+        dir = dir.replace("\\JavaCode","");
+
+        File file = new File(dir +"\\goalc.exe");
         Desktop.getDesktop().open(file);
-        file = new File("C:\\Users\\Mike\\Desktop\\OpenGOAL\\Discord-OpenGOAL\\jak-project\\out\\build\\Release\\bin\\gk.exe");
+        file = new File(dir +"\\launchgame.bat");
         Desktop.getDesktop().open(file);
+
         TimeUnit.SECONDS.sleep(3);
         clientSocket = new Socket("127.0.0.1", 8181);
         TimeUnit.SECONDS.sleep(5);
