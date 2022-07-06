@@ -189,6 +189,14 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(send-event *target* 'edge-grab)");
             }
             //todo fix this
+
+            if (args[0].equalsIgnoreCase("!lod")){
+                main.runCommand("(if (= (-> *pc-settings* lod-force-tfrag) 2)(begin(set! (-> *pc-settings* lod-force-tfrag) 0)(set! (-> *pc-settings* lod-force-tie) 0)(set! (-> *pc-settings* lod-force-ocean) 0)(set! (-> *pc-settings* lod-force-actor) 0))(begin(set! (-> *pc-settings* lod-force-tfrag) 2)(set! (-> *pc-settings* lod-force-tie) 3)(set! (-> *pc-settings* lod-force-ocean) 2)(set! (-> *pc-settings* lod-force-actor) 3)))");
+            }
+
+            if (args[0].equalsIgnoreCase(("!dark"))) {
+                main.runCommand("(if (not (= (-> (level-get-target-inside *level*) mood-func)update-mood-finalboss)) (set! (-> (level-get-target-inside *level*) mood-func)update-mood-finalboss) (set! (-> (level-get-target-inside *level*) mood-func)update-mood-training))");
+            }
             if (args[0].equalsIgnoreCase(("!heal"))) {
                 main.runCommand("(send-event *target* 'get-pickup 4 1.0)");
             }
