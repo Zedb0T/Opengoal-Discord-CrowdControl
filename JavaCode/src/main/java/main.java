@@ -43,11 +43,13 @@ public class main {
 
 
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 6; i++) {
             rt.exec("taskkill /F /IM goalc.exe");
             rt.exec("taskkill /F /IM gk.exe");
+            rt.exec("taskkill /F /IM cmd.exe");
+            TimeUnit.SECONDS.sleep(1);
         }
-        TimeUnit.SECONDS.sleep(3);
+
         //rt.exec("cmd.exe cd C:\\Users\\NinjaPC\\Desktop\\opengoal\\unmodified releases\\newputty\\jak-project && task repl");
 
         // directory from where the program was launched

@@ -134,10 +134,10 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!redeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 5.0)");
             }
-            if (args[0].equalsIgnoreCase(("!rgweghh"))) {
+            if (args[0].equalsIgnoreCase(("!noeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 0.1)");
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 0.1)");
-                main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 0 ))");
+                main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 0.0001 ))");
                 try {
                     TimeUnit.SECONDS.sleep(20);
                 } catch (InterruptedException e) {
@@ -202,6 +202,20 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!setflutflut"))) {
                 main.runCommand("(set! (-> *flut-walk-mods* target-speed)(meters " + args[1] + "))");
             }
+            if (args[0].equalsIgnoreCase(("!camera"))) {
+                main.runCommand("(set! (-> *pc-settings* third-camera-h-inverted?) (not (-> *pc-settings* third-camera-h-inverted?)))");
+            }
+            if (args[0].equalsIgnoreCase(("!allactors"))) {
+                main.runCommand("(set! (-> *pc-settings* force-actors?) (not (-> *pc-settings* force-actors?)))");
+            }
+            if (args[0].equalsIgnoreCase(("!debug"))) {
+                main.runCommand("(set! *debug-segment* (not *debug-segment*))");
+                main.runCommand("(set! *cheat-mode* (not *cheat-mode*))");
+            }
+            if (args[0].equalsIgnoreCase(("!shortfall"))) {
+                main.runCommand("(set! (-> *TARGET-bank* fall-far) (meters 1))(set! (-> *TARGET-bank* fall-far-inc) (meters 1))");
+
+            }
 
 
             if (args[0].equalsIgnoreCase(("!frickstorage"))) {
@@ -215,6 +229,8 @@ public class Commands extends ListenerAdapter {
                 main.runCommand(" (start 'debug (get-or-create-continue! *game-info*))");
 
             }
+
+
 
             if (args[0].equalsIgnoreCase("!freecam")) {
                 main.runCommand(" (stop 'debug)");
