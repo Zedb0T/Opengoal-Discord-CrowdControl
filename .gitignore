@@ -1,0 +1,5 @@
+
+data/decompiler_out/*
+data/iso_data/*
+data/log/*
+data/out/*
