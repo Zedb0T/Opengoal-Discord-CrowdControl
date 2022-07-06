@@ -71,6 +71,8 @@ public class main {
         runCommand("(lt)");
         runCommand("(mi)");
         runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 5.0)");
+        runCommand("(set! *cheat-mode* #f)");
+        runCommand("(set! *debug-segment* #f)");
 
     }
 
