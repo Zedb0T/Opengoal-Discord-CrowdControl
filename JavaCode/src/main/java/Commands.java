@@ -138,7 +138,9 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(set! (-> (the-as fact-info-target (-> *target* fact))health) 1.0)");
                 main.runCommand("(when (process-by-ename \"plant-boss-3\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"plant-boss-3\"))root)trans) (meters 436.97) (meters -43.99) (meters -347.09) 1.0))");
             }
-
+            if (args[0].equalsIgnoreCase("!warpto")) {
+                main.runCommand("(set! (-> (target-pos 0) x) (meters "+args[1]+"))  (set! (-> (target-pos 0) y) (meters "+ args[2]+")) (set! (-> (target-pos 0) z) (meters "+args[3]+"))");
+            }
 
             if (args[0].equalsIgnoreCase(("!nopunching"))) {
 
