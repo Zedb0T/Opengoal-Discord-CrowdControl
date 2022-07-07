@@ -231,6 +231,12 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!setflutflut"))) {
                 main.runCommand("(set! (-> *flut-walk-mods* target-speed)(meters " + args[1] + "))");
             }
+            if (args[0].equalsIgnoreCase(("!fastjak"))) {
+                main.runCommand("(if (not(=(-> *walk-mods* target-speed) 99999.0))(begin(if (=(-> *walk-mods* target-speed) 20000.0)(pc-cheat-toggle-and-tune *pc-settings* eco-yellow))(set! (-> *walk-mods* target-speed) 99999.0)(set! (-> *double-jump-mods* target-speed) 99999.0)(set! (-> *jump-mods* target-speed) 99999.0)(set! (-> *jump-attack-mods* target-speed) 99999.0)(set! (-> *attack-mods* target-speed) 99999.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))");
+            }
+            if (args[0].equalsIgnoreCase(("!slowjak"))) {
+                main.runCommand("(if (not(=(-> *walk-mods* target-speed) 20000.0))(begin(set! (-> *walk-mods* target-speed) 20000.0)(set! (-> *double-jump-mods* target-speed) 20000.0)(set! (-> *jump-mods* target-speed) 20000.0)(set! (-> *jump-attack-mods* target-speed) 2000.0)(set! (-> *attack-mods* target-speed) 20000.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 0)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
+            }
             if (args[0].equalsIgnoreCase(("!camera"))) {
                 main.runCommand("(set! (-> *pc-settings* third-camera-h-inverted?) (not (-> *pc-settings* third-camera-h-inverted?)))");
             }
