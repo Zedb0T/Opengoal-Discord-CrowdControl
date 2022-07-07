@@ -97,36 +97,41 @@ public class Commands extends ListenerAdapter {
             }
 
             if (args[0].equalsIgnoreCase(("!superjump"))) {
-                main.runCommand(changeJumpPowerMin(5));
-                main.runCommand(changeDblJumpPowerMin(5));
-                main.runCommand(changeJumpPowerMax(15));
-                main.runCommand(changeDblJumpPowerMax(15));
-                try {
-                    TimeUnit.SECONDS.sleep(12);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                main.runCommand(changeJumpPowerMin(1));
-                main.runCommand(changeDblJumpPowerMin(1));
-                main.runCommand(changeJumpPowerMax(3));
-                main.runCommand(changeDblJumpPowerMax(3));
+               main.runCommand("(if (= (-> *TARGET-bank* jump-height-max)(meters 15.0))(begin (set! (-> *TARGET-bank* jump-height-max)(meters 3.5))(set! (-> *TARGET-bank* jump-height-min)(meters 1.01))(set! (-> *TARGET-bank* double-jump-height-max)(meters 2.5))(set! (-> *TARGET-bank* double-jump-height-min)(meters 1)))(begin (set! (-> *TARGET-bank* jump-height-max)(meters 15.0))(set! (-> *TARGET-bank* jump-height-min)(meters 5.0))(set! (-> *TARGET-bank* double-jump-height-max)(meters 15.0))(set! (-> *TARGET-bank* double-jump-height-min)(meters 5.0))))");
             }
             if (args[0].equalsIgnoreCase(("!normaljump"))) {
                 main.runCommand(changeJumpPowerMin(1));
                 main.runCommand(changeJumpPowerMax(3));
             }
 
+
+            if (args[0].equalsIgnoreCase(("!gotolevel"))) {
+                main.runCommand("(start 'play (get-continue-by-name *game-info* \""+args[1]+"\")) ");
+            }
+
             if (args[0].equalsIgnoreCase(("!blueeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-blue) 5.0)");
+            }
+            if (args[0].equalsIgnoreCase(("!superboosted"))) {
+                main.runCommand("(if (not(=(-> *edge-surface* fric) 1.0))(set! (-> *edge-surface* fric) 1.0)(set! (-> *edge-surface* fric) 30720.0))");
+            }
+            if (args[0].equalsIgnoreCase(("!noboosteds"))) {
+                main.runCommand("(if (not(=(-> *edge-surface* fric) 1530000.0))(set! (-> *edge-surface* fric) 1530000.0)(set! (-> *edge-surface* fric) 30720.0))");
             }
             if (args[0].equalsIgnoreCase(("!yelloweco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 5.0)");
             }
+            if (args[0].equalsIgnoreCase(("!smallnet"))) {
+                main.runCommand("(if (=(-> *FISHER-bank* net-radius)(meters 0.0))(set!(-> *FISHER-bank* net-radius)(meters 0.7))(set! (-> *FISHER-bank* net-radius)(meters 0.0)))");
+            }
+            if (args[0].equalsIgnoreCase(("!widefish"))) {
+                main.runCommand("(if (=(-> *FISHER-bank* width)(meters 10.0))(set! (-> *FISHER-bank* width)(meters 3.3))(set! (-> *FISHER-bank* width)(meters 10.0)))");
+            }
             if (args[0].equalsIgnoreCase(("!nopunching"))) {
 
-                main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 500 ))");
+                main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 20 ))");
 
-                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 20.0)");
+                main.runCommand("(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
             }
             if (args[0].equalsIgnoreCase(("!greeneco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-green) 5.0)");
@@ -134,12 +139,15 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!redeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 5.0)");
             }
+            if(args[0].equalsIgnoreCase("!deload")){
+                main.runCommand("(restore-load-state-and-cleanup *load-state*)");
+            }
             if (args[0].equalsIgnoreCase(("!noeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 0.1)");
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 0.1)");
                 main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 0.0001 ))");
                 try {
-                    TimeUnit.SECONDS.sleep(20);
+                    TimeUnit.SECONDS.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -213,15 +221,23 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!camera"))) {
                 main.runCommand("(set! (-> *pc-settings* third-camera-h-inverted?) (not (-> *pc-settings* third-camera-h-inverted?)))");
             }
-            if (args[0].equalsIgnoreCase(("!allactors"))) {
-                main.runCommand("(set! (-> *pc-settings* force-actors?) (not (-> *pc-settings* force-actors?)))");
+            if (args[0].equalsIgnoreCase(("!actorson"))) {
+                main.runCommand("(set! (-> *pc-settings* force-actors?) #t)");
+            }
+            if (args[0].equalsIgnoreCase(("!actorsoff"))) {
+                main.runCommand("(set! (-> *pc-settings* force-actors?) #f)");
             }
             if (args[0].equalsIgnoreCase(("!debug"))) {
                 main.runCommand("(set! *debug-segment* (not *debug-segment*))");
                 main.runCommand("(set! *cheat-mode* (not *cheat-mode*))");
             }
             if (args[0].equalsIgnoreCase(("!shortfall"))) {
-                main.runCommand("(set! (-> *TARGET-bank* fall-far) (meters 1))(set! (-> *TARGET-bank* fall-far-inc) (meters 1))");
+                main.runCommand("(if (= (-> *TARGET-bank* fall-far) (meters 1))(begin(set! (-> *TARGET-bank* fall-far) (meters 30))(set! (-> *TARGET-bank* fall-far-inc) (meters 20)))(begin (set! (-> *TARGET-bank* fall-far) (meters 1))(set! (-> *TARGET-bank* fall-far-inc) (meters 1))))");
+
+            }
+
+            if (args[0].equalsIgnoreCase(("!basincell"))) {
+                main.runCommand("(if (when (process-by-ename \"fuel-cell-45\") (= (-> (->(the process-drawable (process-by-ename \"fuel-cell-45\"))root)trans x)  (meters -266.54)))(when (process-by-ename \"fuel-cell-45\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"fuel-cell-45\"))root)trans) (meters -248.92) (meters 52.11) (meters -1515.66) 1.0))(when (process-by-ename \"fuel-cell-45\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"fuel-cell-45\"))root)trans) (meters -266.54) (meters 52.11) (meters -1508.48) 1.0)))");
 
             }
 
@@ -266,7 +282,7 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(run-next-time-in-process (the process (activate (get-process *default-dead-pool* process #x4000) *default-pool* 'process (the pointer #x70004000))) (lambda () (while #t (if *target* (update-rain *target*)) (suspend))))");
             }
             System.out.println(event.getMember().getId());
-            if (args[0].equalsIgnoreCase("!repl") && (event.getMember().getId().equalsIgnoreCase("178908133475876865")) || (event.getMember().getId().equalsIgnoreCase("534921732608360449") || (event.getMember().getId().equalsIgnoreCase("126398522361643008") || event.getMember().getId().equalsIgnoreCase("140194315518345216")))) {
+            if (args[0].equalsIgnoreCase("!repl") && (event.getMember().getId().equalsIgnoreCase("178908133475876865")) || (event.getMember().getId().equalsIgnoreCase("534921732608360449") || (event.getMember().getId().equalsIgnoreCase("126398522361643008") ||event.getMember().getId().equalsIgnoreCase("277309197798866946") || event.getMember().getId().equalsIgnoreCase("140194315518345216")))) {
                 String fullString = "";
                 for (int i = 1; i < args.length; i++) {
 
