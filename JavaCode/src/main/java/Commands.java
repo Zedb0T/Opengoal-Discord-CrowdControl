@@ -127,6 +127,19 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!widefish"))) {
                 main.runCommand("(if (=(-> *FISHER-bank* width)(meters 10.0))(set! (-> *FISHER-bank* width)(meters 3.3))(set! (-> *FISHER-bank* width)(meters 10.0)))");
             }
+
+            if (args[0].equalsIgnoreCase(("!moveplantboss"))) {
+                main.runCommand("(set! (-> *pc-settings* force-actors?) #t)");
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                main.runCommand("(set! (-> (the-as fact-info-target (-> *target* fact))health) 1.0)");
+                main.runCommand("(when (process-by-ename \"plant-boss-3\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"plant-boss-3\"))root)trans) (meters 436.97) (meters -43.99) (meters -347.09) 1.0))");
+            }
+
+
             if (args[0].equalsIgnoreCase(("!nopunching"))) {
 
                 main.runCommand("(set! (-> *FACT-bank* eco-full-timeout) (seconds 20 ))");
