@@ -19,9 +19,8 @@ public class main {
     public static BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
     //create client socket, connect to server
     public static Socket clientSocket;
-
+    //Need to start the discord bot up to listen for commands.
     static {
-
         try {
             System.out.println("starting bot...");
             bot = JDABot.startbot();
@@ -30,105 +29,86 @@ public class main {
         }
     }
 
-
     public static void main(String[] args) throws IOException, InterruptedException {
-        Variables.intArrayLists();
-        bootUP("args");
-
+        Variables.intArrayLists(); //easier than defining the list lol
+        bootUP("args"); //start the Discord crowd control.
 
     }
 
     public static void bootUP(String args) throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
+        //Create a runtime and try to close any instance of open goal.
 
+        // If you change this variable the game will try more or less to close itself on reboot.
+        //A lower number means restarts would be faster.
+        //A Higher number means restarts would be more consistant.
+        int closeAmount = 6;
 
-
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < closeAmount; i++) {
             rt.exec("taskkill /F /IM goalc.exe");
             rt.exec("taskkill /F /IM gk.exe");
             rt.exec("taskkill /F /IM cmd.exe");
             TimeUnit.SECONDS.sleep(1);
         }
 
-        //rt.exec("cmd.exe cd C:\\Users\\NinjaPC\\Desktop\\opengoal\\unmodified releases\\newputty\\jak-project && task repl");
+
 
         // directory from where the program was launched
         String dir = System.getProperty("user.dir");
-        dir = dir.replace("\\JavaCode","");
+        String root = dir.replace("\\JavaCode","");
 
-        File file = new File(dir +"\\goalc.exe");
+        File file = new File(root +"\\goalc.exe");
         Desktop.getDesktop().open(file);
-        file = new File(dir +"\\launchgame.bat");
+        file = new File(root +"\\launchgame.bat");
         Desktop.getDesktop().open(file);
-
+        //Wait a certain amount of time for goalc.exe
+        // to be ready before trying to connect to it
         TimeUnit.SECONDS.sleep(3);
         clientSocket = new Socket("127.0.0.1", 8181);
-        TimeUnit.SECONDS.sleep(5);
-        main.runCommand("(lt)");
-        // TimeUnit.SECONDS.sleep(15);
-        main.runCommand("(mi)");
-        // TimeUnit.SECONDS.sleep(10);
-
-
+       // TimeUnit.SECONDS.sleep(5); <-- don't think this is needed.
         runCommand("(lt)");
         runCommand("(mi)");
+
+        //Play something visually to the user to let them know they are connected.
         runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 5.0)");
+        runCommand("(dotimes (i 1) (sound-play-by-name (static-sound-name \"cell-prize\") (new-sound-id) 1024 0 0 (sound-group sfx) #t))");
+
+        //Do "startup" commands here can be anything, for example we disable debug mode no stinky cheaters here
         runCommand("(set! *cheat-mode* #f)");
         runCommand("(set! *debug-segment* #f)");
 
     }
 
     public static void runCommand(String args) {
-        String temp;
-        String displayBytes;
-        try {
-            //create input stream
 
+        try {
+
+            if (!clientSocket.isConnected()){
+                System.out.println("ERROR: We are not connected to the REPL");
+            };
 
             //create output stream attached to socket
-            DataOutputStream outToServer =
-                    new DataOutputStream(clientSocket.getOutputStream());
-
-
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             //create input stream attached to socket
-            BufferedReader inFromServer =
-                    new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            // temp = inFromUser.readLine();
-            String replCommand = "(set! (-> *TARGET-bank* wheel-flip-dist) (meters 100))";
-            replCommand = args;
+            String replCommand = args;
 
             //send line to server
-
             byte[] data = replCommand.getBytes("UTF-8");
             ByteBuffer buffer = ByteBuffer.allocate(4 + 4 + data.length);
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             // this is the fix
             buffer.putInt(data.length);
             buffer.putInt(10);
-
             buffer.put(data);
-            System.out.println(buffer.array());
             outToServer.write(buffer.array());
-
-            System.out.println("sent this thing");
-
-
-            System.out.println(clientSocket.isConnected());
 
 
             System.out.println("Sent " + replCommand + " to Repl server");
             if(Commands.event != null) {
-                Commands.event.getChannel().sendMessage("Sent " + replCommand + " to Repl server").queue();
+                Commands.event.getChannel().sendMessage("Sent " + replCommand + " to Repl server by " + Commands.event.getMember().getNickname()).queue();
             }
-            //read line from server
-            String modifiedSentence = "";
-         //   while ((modifiedSentence = inFromServer.readLine()) != null) {
-          //      System.out.println("FROM SERVER: " + modifiedSentence);
-           //     modifiedSentence=null;
-          //  }
-
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
