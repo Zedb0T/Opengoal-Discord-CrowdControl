@@ -306,7 +306,12 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(run-next-time-in-process (the process (activate (get-process *default-dead-pool* process #x4000) *default-pool* 'process (the pointer #x70004000))) (lambda () (while #t (if *target* (update-rain *target*)) (suspend))))");
             }
             System.out.println(event.getMember().getId());
-            if (args[0].equalsIgnoreCase("!repl") && (event.getMember().getId().equalsIgnoreCase("178908133475876865")) || (event.getMember().getId().equalsIgnoreCase("534921732608360449") || (event.getMember().getId().equalsIgnoreCase("126398522361643008") ||event.getMember().getId().equalsIgnoreCase("277309197798866946") || event.getMember().getId().equalsIgnoreCase("140194315518345216")))) {
+            if (args[0].equalsIgnoreCase("!repl") &&
+                    (event.getMember().getId().equalsIgnoreCase("178908133475876865") ||
+                    (event.getMember().getId().equalsIgnoreCase("534921732608360449") ||
+                    (event.getMember().getId().equalsIgnoreCase("126398522361643008") ||
+                    (event.getMember().getId().equalsIgnoreCase("277309197798866946") ||
+                    (event.getMember().getId().equalsIgnoreCase("140194315518345216"))))))) {
                 String fullString = "";
                 for (int i = 1; i < args.length; i++) {
 
