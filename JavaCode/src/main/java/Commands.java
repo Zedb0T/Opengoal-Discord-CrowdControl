@@ -92,6 +92,8 @@ public class Commands extends ListenerAdapter {
                     e.printStackTrace();
                 }
                 main.runCommand("(set! (-> (the-as fact-info-target (-> *target* fact))health) 1.0)");
+                main.runCommand("(set! (-> (target-pos 0) x) (meters 431.47))  (set! (-> (target-pos 0) y) (meters -44.00)) (set! (-> (target-pos 0) z) (meters -334.09))");
+                main.runCommand(" (start 'play (get-or-create-continue! *game-info*))");
                 main.runCommand("(when (process-by-ename \"plant-boss-3\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"plant-boss-3\"))root)trans) (meters 436.97) (meters -43.99) (meters -347.09) 1.0))");
             }
             if (args[0].equalsIgnoreCase("!tp")) {
