@@ -143,7 +143,7 @@ public class Commands extends ListenerAdapter {
                 //todo add suck-suck default to message
                 main.runCommand("(set! (-> *FACT-bank* suck-suck-dist) (meters " + args[1] + "))");
                 main.runCommand("(set! (-> *FACT-bank* suck-bounce-dist) (meters " + args[1] + "))");
-                event.getChannel().sendMessage("Suck defaults should be %DEFAULTVALUE%");
+                event.getChannel().sendMessage("Suck defaults should be 12.0").queue();
             }
             if (args[0].equalsIgnoreCase(("!getoff"))) {
                 main.runCommand("(send-event *target* 'end-mode)");
