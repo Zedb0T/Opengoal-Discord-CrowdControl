@@ -7,3 +7,4 @@ JavaCode/.env
 JavaCode/.idea/misc.xml
 JavaCode/.idea/misc.xml
 JavaCode/target/classes/main.class
+*.class
