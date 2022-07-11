@@ -117,7 +117,15 @@ public class Commands extends ListenerAdapter {
             }
             if (args[0].equalsIgnoreCase(("!eco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-"+args[1]+") 5.0)");
-
+            }
+            if (args[0].equalsIgnoreCase(("!heatmax"))) {
+                main.runCommand("(set! (-> *RACER-bank* heat-max) "+Double.valueOf(args[1])+")");
+            }
+            if (args[0].equalsIgnoreCase(("!iframes"))) {
+                main.runCommand("(set! (-> *TARGET-bank* hit-invulnerable-timeout) (seconds "+args[1]+"))");
+            }
+            if (args[0].equalsIgnoreCase(("!pacifist"))) {
+                main.runCommand("(if(=(-> *TARGET-bank* punch-radius) 0.0)(begin(set! (-> *TARGET-bank* punch-radius) (meters 1.3))(set! (-> *TARGET-bank* spin-radius) (meters 2.2))(set! (-> *TARGET-bank* flop-radius) (meters 1.4))(set! (-> *TARGET-bank* uppercut-radius) (meters 1)))(begin(set! (-> *TARGET-bank* punch-radius) (meters 0.0))(set! (-> *TARGET-bank* spin-radius) (meters 0.0))(set! (-> *TARGET-bank* flop-radius) (meters 0.0))(set! (-> *TARGET-bank* uppercut-radius) (meters 0.0))))");
             }
             if (args[0].equalsIgnoreCase(("!superboosted"))) {
                 main.runCommand("(if (not(=(-> *edge-surface* fric) 1.0))(set! (-> *edge-surface* fric) 1.0)(set! (-> *edge-surface* fric) 30720.0))");
@@ -141,10 +149,10 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(target-attack-up *target* 'attack 'burnup)");
             }
             if (args[0].equalsIgnoreCase(("!give"))) {
-                main.runCommand("(set! (-> *game-info* "+args[1]+") (+ (-> *game-info* "+args[1]+") "+args[2]+"))");
+                main.runCommand("(set! (-> *game-info* "+args[1]+") (+ (-> *game-info* "+args[1]+") "+Double.valueOf(args[2])+"))");
             }
             if (args[0].equalsIgnoreCase(("!setcollected"))) {
-                main.runCommand("(set! (-> *game-info* "+args[1]+") "+args[2]+")");
+                main.runCommand("(set! (-> *game-info* "+args[1]+") "+Double.valueOf(args[2])+")");
             }
             if (args[0].equalsIgnoreCase(("!enemyspeed"))) {
                 main.runCommand("(set! (-> *"+args[1]+"-nav-enemy-info* run-travel-speed) (meters "+args[2]+"))");
@@ -268,10 +276,10 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(set! (-> *flut-walk-mods* target-speed)(meters " + args[1] + "))");
             }
             if (args[0].equalsIgnoreCase(("!fastjak"))) {
-                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 99999.0))(begin(if (=(-> *walk-mods* target-speed) 20000.0)(pc-cheat-toggle-and-tune *pc-settings* eco-yellow))(set! (-> *walk-mods* target-speed) 99999.0)(set! (-> *double-jump-mods* target-speed) 99999.0)(set! (-> *jump-mods* target-speed) 99999.0)(set! (-> *jump-attack-mods* target-speed) 99999.0)(set! (-> *attack-mods* target-speed) 99999.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))");
+                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 99999.0))(begin(if (=(-> *walk-mods* target-speed) 20000.0)(pc-cheat-toggle-and-tune *pc-settings* eco-yellow))(set! (-> *walk-mods* target-speed) 99999.0)(set! (-> *double-jump-mods* target-speed) 99999.0)(set! (-> *jump-mods* target-speed) 99999.0)(set! (-> *jump-attack-mods* target-speed) 99999.0)(set! (-> *attack-mods* target-speed) 99999.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17.3)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17.3))))");
             }
             if (args[0].equalsIgnoreCase(("!slowjak"))) {
-                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 20000.0))(begin(set! (-> *walk-mods* target-speed) 20000.0)(set! (-> *double-jump-mods* target-speed) 20000.0)(set! (-> *jump-mods* target-speed) 20000.0)(set! (-> *jump-attack-mods* target-speed) 2000.0)(set! (-> *attack-mods* target-speed) 20000.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 0)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
+                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 20000.0))(begin(set! (-> *walk-mods* target-speed) 20000.0)(set! (-> *double-jump-mods* target-speed) 20000.0)(set! (-> *jump-mods* target-speed) 20000.0)(set! (-> *jump-attack-mods* target-speed) 2000.0)(set! (-> *attack-mods* target-speed) 20000.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 0)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17.3))))(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
             }
             if (args[0].equalsIgnoreCase(("!invertcam"))) {
                 main.runCommand("(set! (-> *pc-settings* "+ args[1]+"-camera-"+ args[2]+"-inverted?) (not (-> *pc-settings* "+ args[1]+"-camera-"+ args[2]+"-inverted?)))");
