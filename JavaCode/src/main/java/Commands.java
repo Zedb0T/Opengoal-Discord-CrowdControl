@@ -6,7 +6,7 @@ import javax.security.auth.login.LoginException;
 import java.sql.Time;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit
 
 public class Commands extends ListenerAdapter {
     public Commands() throws LoginException, InterruptedException {
@@ -109,13 +109,15 @@ public class Commands extends ListenerAdapter {
                 main.runCommand(changeJumpPowerMax(3));
             }
 
-
-            if (args[0].equalsIgnoreCase(("!gotolevel"))) {
+            if (args[0].equalsIgnoreCase("!gotolevel") || args[0].equalsIgnoreCase("!gotopoint")) {
                 main.runCommand("(start 'play (get-continue-by-name *game-info* \""+args[1]+"\")) ");
             }
+            if (args[0].equalsIgnoreCase(("!movetojak"))) {
+                main.runCommand("(when (process-by-ename \""+args[1]+"\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \""+args[1]+"\"))root)trans) (-> (target-pos 0) x) (-> (target-pos 0) y) (-> (target-pos 0) z) 1.0))");
+            }
+            if (args[0].equalsIgnoreCase(("!eco"))) {
+                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-"+args[1]+") 5.0)");
 
-            if (args[0].equalsIgnoreCase(("!blueeco"))) {
-                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-blue) 5.0)");
             }
             if (args[0].equalsIgnoreCase(("!superboosted"))) {
                 main.runCommand("(if (not(=(-> *edge-surface* fric) 1.0))(set! (-> *edge-surface* fric) 1.0)(set! (-> *edge-surface* fric) 30720.0))");
@@ -123,24 +125,56 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!noboosteds"))) {
                 main.runCommand("(if (not(=(-> *edge-surface* fric) 1530000.0))(set! (-> *edge-surface* fric) 1530000.0)(set! (-> *edge-surface* fric) 30720.0))");
             }
-            if (args[0].equalsIgnoreCase(("!yelloweco"))) {
-                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 5.0)");
-            }
             if (args[0].equalsIgnoreCase(("!smallnet"))) {
                 main.runCommand("(if (=(-> *FISHER-bank* net-radius)(meters 0.0))(set!(-> *FISHER-bank* net-radius)(meters 0.7))(set! (-> *FISHER-bank* net-radius)(meters 0.0)))");
             }
             if (args[0].equalsIgnoreCase(("!widefish"))) {
                 main.runCommand("(if (=(-> *FISHER-bank* width)(meters 10.0))(set! (-> *FISHER-bank* width)(meters 3.3))(set! (-> *FISHER-bank* width)(meters 10.0)))");
             }
+            if (args[0].equalsIgnoreCase(("!melt"))) {
+                main.runCommand("(target-attack-up *target* 'attack 'melt)");
+            }
+            if (args[0].equalsIgnoreCase(("!endlessfall"))) {
+                main.runCommand("(target-attack-up *target* 'attack 'endlessfall)");
+            }
+            if (args[0].equalsIgnoreCase(("!burn"))) {
+                main.runCommand("(target-attack-up *target* 'attack 'burnup)");
+            }
+            if (args[0].equalsIgnoreCase(("!give"))) {
+                main.runCommand("(set! (-> *game-info* "+args[1]+") (+ (-> *game-info* "+args[1]+") "+args[2]+"))");
+            }
+            if (args[0].equalsIgnoreCase(("!setcollected"))) {
+                main.runCommand("(set! (-> *game-info* "+args[1]+") "+args[2]+")");
+            }
+            if (args[0].equalsIgnoreCase(("!enemyspeed"))) {
+                main.runCommand("(set! (-> *"+args[1]+"-nav-enemy-info* run-travel-speed) (meters "+args[2]+"))");
+            }
 
             if (args[0].equalsIgnoreCase(("!moveplantboss"))) {
                 main.runCommand("(set! (-> *pc-settings* force-actors?) #t)");
                 try {
-                    TimeUnit.MILLISECONDS.sleep(100);
+                    TimeUnit.MILLISECONDS.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                main.runCommand("(when (process-by-ename \"plant-boss-3\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"plant-boss-3\"))root)trans) (meters 436.97) (meters -43.99) (meters -347.09) 1.0))");
                 main.runCommand("(set! (-> (the-as fact-info-target (-> *target* fact))health) 1.0)");
+                //main.runCommand(" (start 'play (get-or-create-continue! *game-info*))");
+                try {
+                    TimeUnit.MILLISECONDS.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                main.runCommand("(set! (-> (target-pos 0) x) (meters 431.47))  (set! (-> (target-pos 0) y) (meters -44.00)) (set! (-> (target-pos 0) z) (meters -334.09))");
+            }
+            if (args[0].equalsIgnoreCase(("!moveplantboss2"))) {
+                main.runCommand("(set! (-> *pc-settings* force-actors?) #t)");
+                try {
+                    TimeUnit.MILLISECONDS.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 main.runCommand("(when (process-by-ename \"plant-boss-3\")(set-vector!  (-> (-> (the process-drawable (process-by-ename \"plant-boss-3\"))root)trans) (meters 436.97) (meters -43.99) (meters -347.09) 1.0))");
             }
             if (args[0].equalsIgnoreCase("!tp")) {
@@ -156,14 +190,11 @@ public class Commands extends ListenerAdapter {
 
                 main.runCommand("(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
             }
-            if (args[0].equalsIgnoreCase(("!greeneco"))) {
-                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-green) 5.0)");
-            }
-            if (args[0].equalsIgnoreCase(("!redeco"))) {
-                main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-red) 5.0)");
-            }
             if(args[0].equalsIgnoreCase("!deload")){
-                main.runCommand("(restore-load-state-and-cleanup *load-state*)");
+                main.runCommand("(set! (-> *load-state* want 0 display?) #f)");
+            }
+            if(args[0].equalsIgnoreCase("!loadlevel")){
+                main.runCommand("(set! (-> *load-state* want 1 name) '"+args[1]+")(set! (-> *load-state* want 1 display?) 'display)");
             }
             if (args[0].equalsIgnoreCase(("!noeco"))) {
                 main.runCommand("(send-event *target* 'get-pickup (pickup-type eco-yellow) 0.1)");
@@ -186,8 +217,10 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(start 'play (get-continue-by-name *game-info* \""+randomCheckpoint+"\"))");
             }
 
-            if (args[0].equalsIgnoreCase(("!setsucksuck"))) {
-                //todo increase the other thing too
+
+            if (args[0].equalsIgnoreCase(("!sucksuck"))) {
+                //todo add suck-suck default to message
+
                 main.runCommand("(set! (-> *FACT-bank* suck-suck-dist) (meters " + args[1] + "))");
                 main.runCommand("(set! (-> *FACT-bank* suck-bounce-dist) (meters " + args[1] + "))");
             }
@@ -197,17 +230,10 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase(("!trip"))) {
                 main.runCommand("(send-event *target* 'loading)");
             }
-            if (args[0].equalsIgnoreCase(("!DAX"))) {
-                if(Variables.havedax) {
-                    main.runCommand("(send-event *target* 'sidekick #f)");
-                    Variables.havedax = false;
-                    return;
-                }
-                if(Variables.havedax == false) {
-                    main.runCommand("(send-event *target* 'sidekick #t)");
-                    Variables.havedax = true;
-                    return;
-                }
+
+            if (args[0].equalsIgnoreCase(("!dax"))) {
+                main.runCommand("(send-event *target* 'sidekick (not (not (send-event *target* 'sidekick #t))))");
+
             }
             if (args[0].equalsIgnoreCase(("!ouch"))) {
 
@@ -242,13 +268,16 @@ public class Commands extends ListenerAdapter {
                 main.runCommand("(set! (-> *flut-walk-mods* target-speed)(meters " + args[1] + "))");
             }
             if (args[0].equalsIgnoreCase(("!fastjak"))) {
-                main.runCommand("(if (not(=(-> *walk-mods* target-speed) 99999.0))(begin(if (=(-> *walk-mods* target-speed) 20000.0)(pc-cheat-toggle-and-tune *pc-settings* eco-yellow))(set! (-> *walk-mods* target-speed) 99999.0)(set! (-> *double-jump-mods* target-speed) 99999.0)(set! (-> *jump-mods* target-speed) 99999.0)(set! (-> *jump-attack-mods* target-speed) 99999.0)(set! (-> *attack-mods* target-speed) 99999.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))");
+                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 99999.0))(begin(if (=(-> *walk-mods* target-speed) 20000.0)(pc-cheat-toggle-and-tune *pc-settings* eco-yellow))(set! (-> *walk-mods* target-speed) 99999.0)(set! (-> *double-jump-mods* target-speed) 99999.0)(set! (-> *jump-mods* target-speed) 99999.0)(set! (-> *jump-attack-mods* target-speed) 99999.0)(set! (-> *attack-mods* target-speed) 99999.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))");
             }
             if (args[0].equalsIgnoreCase(("!slowjak"))) {
-                main.runCommand("(if (not(=(-> *walk-mods* target-speed) 20000.0))(begin(set! (-> *walk-mods* target-speed) 20000.0)(set! (-> *double-jump-mods* target-speed) 20000.0)(set! (-> *jump-mods* target-speed) 20000.0)(set! (-> *jump-attack-mods* target-speed) 2000.0)(set! (-> *attack-mods* target-speed) 20000.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 0)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
+                main.runCommand("(if (not(=(-> *jump-attack-mods* target-speed) 20000.0))(begin(set! (-> *walk-mods* target-speed) 20000.0)(set! (-> *double-jump-mods* target-speed) 20000.0)(set! (-> *jump-mods* target-speed) 20000.0)(set! (-> *jump-attack-mods* target-speed) 2000.0)(set! (-> *attack-mods* target-speed) 20000.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 0)))(begin(set! (-> *walk-mods* target-speed) 40960.0)(set! (-> *double-jump-mods* target-speed) 32768.0)(set! (-> *jump-mods* target-speed) 40960.0)(set! (-> *jump-attack-mods* target-speed) 24576.0)(set! (-> *attack-mods* target-speed) 40960.0)(set! (-> *TARGET-bank* wheel-flip-dist) (meters 17))))(pc-cheat-toggle-and-tune *pc-settings* eco-yellow)");
             }
-            if (args[0].equalsIgnoreCase(("!camera"))) {
-                main.runCommand("(set! (-> *pc-settings* third-camera-h-inverted?) (not (-> *pc-settings* third-camera-h-inverted?)))");
+            if (args[0].equalsIgnoreCase(("!invertcam"))) {
+                main.runCommand("(set! (-> *pc-settings* "+ args[1]+"-camera-"+ args[2]+"-inverted?) (not (-> *pc-settings* "+ args[1]+"-camera-"+ args[2]+"-inverted?)))");
+            }
+            if (args[0].equalsIgnoreCase(("!normalcam"))) {
+                main.runCommand("(set! (-> *pc-settings* third-camera-h-inverted?) #t)(set! (-> *pc-settings* third-camera-v-inverted?) #t)(set! (-> *pc-settings* first-camera-v-inverted?) #t)(set! (-> *pc-settings* first-camera-h-inverted?) #f)");
             }
             if (args[0].equalsIgnoreCase(("!actorson"))) {
                 main.runCommand("(set! (-> *pc-settings* force-actors?) #t)");
@@ -288,7 +317,7 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase("!freecam")) {
                 main.runCommand(" (stop 'debug)");
                 try {
-                    TimeUnit.SECONDS.sleep(7);
+                    TimeUnit.SECONDS.sleep(6);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
