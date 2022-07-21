@@ -107,7 +107,7 @@ public class main {
 
             System.out.println("Sent " + replCommand + " to REPL server");
             if(Commands.event != null) {
-                Commands.event.getChannel().sendMessage("Sent " + replCommand + " to REPL server by " + Commands.event.getMember().getEffectiveName()).queue();
+                Commands.event.getChannel().sendMessage("Sent `" + replCommand + "` to REPL server by `" + Commands.event.getMember().getEffectiveName()+"`").queue();
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
